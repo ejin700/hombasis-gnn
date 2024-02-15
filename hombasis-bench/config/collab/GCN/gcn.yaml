@@ -1,0 +1,8 @@
+model_name: 'GCN'
+project: 'collab-matthias'
+group: 'GCN'
+name: 'GCN'
+use_counts: False
+count_files: ['collab_path4_counts.json']
+idx_list: []
+description: 'standard GCN'

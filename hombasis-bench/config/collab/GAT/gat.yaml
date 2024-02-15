@@ -1,0 +1,8 @@
+model_name: 'GAT'
+project: 'collab-GAT'
+group: 'GAT'
+name: 'GAT'
+use_counts: False
+count_files: ['collab_path4_counts.json']
+idx_list: []
+description: 'standard GAT'

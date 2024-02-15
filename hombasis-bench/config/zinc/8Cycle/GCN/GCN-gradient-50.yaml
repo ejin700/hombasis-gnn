@@ -1,0 +1,17 @@
+model: 'GCNGraphReg'
+num_layers: 4
+hidden_dim: 145
+residual: True
+batch_norm: True
+readout: 'mean'
+batch_size: 128
+epochs: 1000
+init_lr: .001
+lr_factor: 0.5
+lr_patience: 10
+min_lr: .00001
+use_counts: True
+count_type: 'homcounts'
+count_files: ['with_homs_c8.json']
+idx_list: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17]
+description: '50% full basis for 8cycle GCN-100k'

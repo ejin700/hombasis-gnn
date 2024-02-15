@@ -1,0 +1,19 @@
+model: 'GATGraphReg'
+num_layers: 16
+hidden_dim: 22
+hidden_out_dim: 176
+residual: True
+batch_norm: True
+readout: 'mean'
+num_heads: 8
+batch_size: 128
+epochs: 1000
+init_lr: .001
+lr_factor: 0.5
+lr_patience: 10
+min_lr: .00001
+use_counts: True
+count_type: 'subcounts'
+count_files: ['zinc_3to10C_subgraph.json']
+idx_list: [0, 1, 2, 3, 4, 5]
+description: 'GAT-500k subgraph cycles up to 8'

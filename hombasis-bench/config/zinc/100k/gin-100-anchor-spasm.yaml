@@ -1,0 +1,17 @@
+model: 'GINGraphReg'
+num_layers: 4
+hidden_dim: 110
+residual: True
+batch_norm: True
+readout: 'sum'
+batch_size: 128
+epochs: 1000
+init_lr: .001
+lr_factor: 0.5
+lr_patience: 10
+min_lr: .00001
+use_counts: True
+count_type: 'both'
+count_files: ['zinc_with_anchored_homs_c78_no1wl.json']
+idx_list: []
+description: 'GIN-100k with 78 cycle anchored basis and subcounts'

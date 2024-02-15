@@ -1,0 +1,8 @@
+model_name: 'GCN'
+project: 'collab-GCN-PE'
+group: 'GCN-path4-multsum-PE'
+name: 'GCN-path4-multsum-PE'
+use_counts: True
+count_files: ['collab_path4_counts.json']
+idx_list: []
+description: '4 path, positional encoding, with multsum'

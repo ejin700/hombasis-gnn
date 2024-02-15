@@ -1,0 +1,8 @@
+model_name: 'SAGE'
+project: 'collab-SAGE-PE'
+group: 'SAGE-clique4-PE'
+name: 'SAGE-clique4-PE'
+use_counts: True
+count_files: ['collab_clique4_counts.json']
+idx_list: []
+description: '4 clique, positional encoding'

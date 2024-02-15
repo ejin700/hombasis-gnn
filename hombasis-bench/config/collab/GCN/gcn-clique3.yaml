@@ -1,0 +1,8 @@
+model_name: 'GCN'
+project: 'collab-GCN-PE'
+group: 'GCN-clique3-PE'
+name: 'GCN-clique3-PE'
+use_counts: True
+count_files: ['collab_path4_counts.json']
+idx_list: [2]
+description: '3 clique, positional encoding'

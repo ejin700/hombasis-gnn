@@ -1,0 +1,8 @@
+model_name: 'SAGE'
+project: 'collab-SAGE-PE'
+group: 'SAGE-path3-multsum-PE'
+name: 'SAGE-path3-multsum-PE'
+use_counts: True
+count_files: ['collab_path4_counts.json']
+idx_list: [0, 1, 2, 3]
+description: '3 path, positional encoding, with multsum'

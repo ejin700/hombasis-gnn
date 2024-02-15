@@ -1,0 +1,8 @@
+model_name: 'GAT'
+project: 'collab-GAT-PE'
+group: 'GAT-clique5-PE'
+name: 'GAT-clique5-PE'
+use_counts: True
+count_files: ['collab_clique5_counts.json']
+idx_list: []
+description: '5 clique, positional encoding'

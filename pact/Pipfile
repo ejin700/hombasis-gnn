@@ -1,0 +1,23 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+pandas = "~=1.5"
+networkx = "~=2.8"
+igraph = "~=0.10"
+rich = {extras = ["jupyter"], version = "*"}
+dill = "*"
+matplotlib = "*"
+multiprocess = "*"
+more-itertools = "*"
+jupyter = "*"
+numpy = "*"
+gmpy2 = "*"
+
+[dev-packages]
+line-profiler = "*"
+
+[requires]
+python_version = "3.10"
