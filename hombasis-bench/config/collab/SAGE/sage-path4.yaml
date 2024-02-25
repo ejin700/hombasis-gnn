@@ -5,4 +5,5 @@ name: 'SAGE-path4-multsum-PE'
 use_counts: True
 count_files: ['collab_path4_counts.json']
 idx_list: []
+pe_dim: 6
 description: '4 path, positional encoding, with multsum'

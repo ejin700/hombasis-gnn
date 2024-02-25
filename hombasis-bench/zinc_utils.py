@@ -84,7 +84,7 @@ def eval(model_name, use_counts, model, device, loader):
 
 
 def parse_args():
-    parser = argparse.ArgumentParser(description='HomGIN experiment')
+    parser = argparse.ArgumentParser(description='ZINC experiment')
     parser.add_argument("-c", "--config", help="yaml configuration file", required=True)
     parser.add_argument("-project", "--project")
     parser.add_argument("-group","--group", help="group name on wandb", required=True)

@@ -5,4 +5,5 @@ name: 'GAT'
 use_counts: False
 count_files: ['collab_path4_counts.json']
 idx_list: []
+pe_dim: 0
 description: 'standard GAT'

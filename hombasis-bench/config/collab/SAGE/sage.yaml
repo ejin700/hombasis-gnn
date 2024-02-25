@@ -1,8 +1,9 @@
 model_name: 'SAGE'
-project: 'collab-SAGE-PE'
+project: 'collab-SAGE'
 group: 'SAGE'
 name: 'SAGE'
 use_counts: False
 count_files: ['collab_path4_counts.json']
 idx_list: []
-description: 'SAGE default'
+pe_dim: 0
+description: 'standard SAGE'

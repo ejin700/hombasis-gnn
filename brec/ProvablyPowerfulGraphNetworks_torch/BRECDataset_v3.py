@@ -9,7 +9,7 @@ from tqdm import tqdm
 import json
 
 torch_geometric.seed_everything(2022)
-DATA_SPLIT_NAME = "brec_dr"
+DATA_SPLIT_NAME = "brec_cfi"
 
 def graph6_to_pyg(x):
     return from_networkx(nx.from_graph6_bytes(x))

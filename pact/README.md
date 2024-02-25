@@ -23,4 +23,47 @@ pip uninstall pynauty
 pip install --no-binary pynauty pynauty
 ```
 
+## Usage
 
+Code for homomorphism counting for ZINC, QM9, and BREC is located in the `homcount_preprocessing.ipynb` notebook. A more efficient implementation of counting for the COLLAB dataset is located in the `collab_count.ipynb` notebook, and `collab_K5_count.ipynb` contains the code for counting specifically 5-cliques for COLLAB.
+
+### Data and files
+
+The `homcount_preprocessing.ipynb` notebook requries 2 files:
+1. A homomorphism basis file for the pattern(s) of interest
+2. A data file containing the host graph(s) to perform counting in
+
+All basis files used in the paper (as well as some additional ones) are located in the `bases` folder. 
+
+The graph data files are formatted as json files with the following structure:
+
+```
+{
+    <graph_idx>: {
+        'edge_index': <graph_edge_index>,
+    }
+    ...
+}
+```
+
+We provide the input file for the ZINC dataset in `zinc/zinc12k.zip` for reference. To use this file to perform homomorphism counts on ZINC, please unzip this file first.
+
+The output files that containing homomorphism counts are also json files with the following structure:
+
+```
+{
+    <graph_idx>: {
+        'edge_index': <graph_edge_index>,
+        'homcounts': {
+            <vertex_idx>: <homomorphism_basis_count_list>,
+            ...
+        }
+        'coefficients': <alpha_coefficients>
+    }
+    ...
+}
+```
+
+Note that the "coefficients" field is only for when the basis given is for a sigle pattern (ie the 8 cycle basis). It is not provided for n-vertex homomorphism counting (that is used in QM9 and BREC).
+
+We provide all homomorphism count files for ZINC, COLLAB, QM9, and BREC in their respective directories. 

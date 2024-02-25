@@ -5,4 +5,5 @@ name: 'GCN-path5-multsum-PE'
 use_counts: True
 count_files: ['collab_path5_counts.json']
 idx_list: []
+pe_dim: 8
 description: '5 path, positional encoding, with multsum'

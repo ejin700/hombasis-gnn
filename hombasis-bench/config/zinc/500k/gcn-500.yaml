@@ -12,6 +12,6 @@ lr_patience: 10
 min_lr: .00001
 use_counts: False
 count_type: 'none'
-count_files: ['with_homs_c5.json']
+count_files: ['zinc_with_homs_c7.json']
 idx_list: []
 description: 'standard GCN 500k'

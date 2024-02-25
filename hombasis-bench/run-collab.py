@@ -160,7 +160,6 @@ if __name__ == "__main__":
     parser.add_argument('--epochs', type=int, default=400)
     parser.add_argument('--seed', type=int, default=41)
     parser.add_argument("-c", "--config", required=True)
-    parser.add_argument("-pe_dim", "--pe_dim", required=True)
     parser.add_argument("--num_heads", type=int, default=8)
     args = parser.parse_args()
     print(args)
@@ -184,6 +183,7 @@ if __name__ == "__main__":
     count_files = conf['count_files']
     idx_list = conf['idx_list']
     model_name = conf['model_name']
+    pe_dim = conf['pe_dim']
     
     wandb.init(
         project=project,
@@ -222,15 +222,15 @@ if __name__ == "__main__":
     data = data.to(device)
 
     if model_name == 'GCN':
-        model = GCN(data.num_features, data.count_dim, int(args.pe_dim), args.hidden_channels,
+        model = GCN(data.num_features, data.count_dim, pe_dim, args.hidden_channels,
                     args.hidden_channels, args.num_layers,
                     args.dropout).to(device)
     elif model_name == 'GAT':
-        model = GAT(data.num_features, args.num_heads, data.count_dim, int(args.pe_dim), 32,
+        model = GAT(data.num_features, args.num_heads, data.count_dim, pe_dim, 32,
                     args.hidden_channels, args.num_layers,
                     args.dropout).to(device)
     elif model_name == "SAGE":
-        model = SAGE(data.num_features, data.count_dim, int(args.pe_dim), args.hidden_channels,
+        model = SAGE(data.num_features, data.count_dim, pe_dim, args.hidden_channels,
                     args.hidden_channels, args.num_layers,
                     args.dropout).to(device)
     else:

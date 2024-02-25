@@ -210,3 +210,41 @@ def load_collab_counts(root, use_counts, hom_files=None, idx_list=None):
         data.count_dim = len(vertex_counts)
             
     return dataset, data
+
+
+def load_collab_multsum_counts(root, use_counts, count_type, hom_files=None, idx_list=None):
+    dataset = PygLinkPropPredDataset(name = "ogbl-collab", root=root)
+    data = dataset[0]
+    data.use_counts = use_counts
+    data.count_dim = 0
+
+    all_hom_data = []
+    for hom_file in hom_files:
+        hom_path = os.path.join(root, hom_file)
+        hom_data = json.load(open(hom_path))
+        all_hom_data.append(hom_data)
+    
+    coeffs = json.load(open(os.path.join(root, 'path_coeffs.json')))[count_type]
+    
+    graph_counts = []
+    for v_idx in range(dataset.num_nodes):
+        
+        vertex_counts = []
+        for hom_list in all_hom_data:
+            homcounts = hom_list[str(v_idx)]
+            vertex_counts += homcounts
+                    
+        if len(idx_list) > 0:
+            vertex_counts = np.array(vertex_counts)[idx_list].tolist()
+
+        sub_count = np.sum(np.multiply(vertex_counts, coeffs))
+        vertex_counts.append(sub_count)
+        graph_counts.append(vertex_counts)
+    
+    counts = torch.Tensor(graph_counts)
+    data.counts = counts
+    
+    if use_counts:
+        data.count_dim = len(vertex_counts)
+            
+    return dataset, data

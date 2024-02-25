@@ -54,13 +54,12 @@ BATCH_SIZE = 16
 WEIGHT_DECAY = 1e-5
 LOSS_THRESHOLD = 0.1
 part_dict = {
-    "CFI": (0, 100),
     # "Basic": (0, 60),
     # "Regular": (60, 160),
     # "Extension": (160, 260),
-    # "CFI": (260, 360),
-    # "4-Vertex_Condition": (360, 380),
-    # "Distance_Regular": (380, 400),
+    "CFI": (0, 100),
+    # "4-Vertex_Condition": (0, 20),
+    # "Distance_Regular": (0, 20),
 }
 
 

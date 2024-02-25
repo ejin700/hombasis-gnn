@@ -12,6 +12,6 @@ lr_patience: 10
 min_lr: .00001
 use_counts: True
 count_type: 'homcounts'
-count_files: ['with_homs_c7.json', 'with_homs_c8.json']
+count_files: ['zinc_with_homs_c7.json', 'zinc_with_homs_c8.json']
 idx_list: [0, 3, 11, 15, 31, 46]
 description: 'GIN-100k only hom cycles up to 8'

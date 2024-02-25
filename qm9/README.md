@@ -1,53 +1,34 @@
-# Shortest Path Message Passing Neural Networks
+## About
 
-This repository contains the source code for the Shortest Path Message Passing Neural Network (SP-MPNN) framework 
-models, presented in the LoG 2022 [paper](https://arxiv.org/abs/2206.01003) "Shortest Path Networks for Graph 
-Property Prediction". The repository includes the `h-Prox` datasets, as well as all evaluation datasets and code for 
-training and testing the different SP-MPNN variants across all experiments in the paper.
+This repository contains a modified version of the code used by the [Shortest Path Message Passing Neural Network (SP-MPNN) paper](https://arxiv.org/abs/2206.01003). We adapt their framework to evaluate the performance of R-GCN with homomorphism counts for the QM9 dataset (as presented in Section 5.2 and Appendix D.4 of our paper). 
+
+Note that most modifications were made to the `src/utils/dataset_loader.py`, `src/utils/model_loader.py`, and `src/models/gcn.py` files. For refenece, the original SP-MPNN repo can be found [here](https://github.com/radoslav11/SP-MPNN).
 
 ## Requirements
 
-The requirements for the Python environment can be found in ``requirements.txt``. The
-main packages that have been used are PyTorch, PyTorch Geometric, OGB (Open Graph Benchmark), 
-Neptune (neptune.ai) and Numpy.
+The requirements for the Python environment can be found in ``requirements.txt``. The main packages that have been used are PyTorch, PyTorch Geometric, OGB (Open Graph Benchmark), Neptune (neptune.ai), and Numpy.
 
 Running on a GPU is supported via CUDA.
 
+Tested combination: Python 3.11.5 + PyTorch 2.1.2 + PyTorch Geometric 2.4.0.
+
 ## Datasets
-
-### TU Datasets (Chemical)
-
-Available in Pytorch Geometric.
-
-### Proximity
-
-The synthetic Prox datasets (``k = {1, 3, 5, 8, 10}``) are available [here](https://zenodo.org/record/6557736#.YoPGtS8w30o). 
-To use these datasets, the contents of the aforementioned zip file must be extracted and moved into the ``data`` directory
-
-### MoleculeNet
-
-We use the OGB implementation of the MoleculeNet datasets. More information can be found 
-[here](https://ogb.stanford.edu/docs/graphprop/). 
 
 ### QM9
 
-The QM9 dataset is provided in ``data/QM9``.
+The QM9 dataset is provided in ``data/QM9``. The homomorphism counts of all connected graphs with up to 5 vertices for all graphs in the train, valid, and test set are contained in the `data/QM9/v5_homcounts.zip` file. This zip file contains a folder with three files: `train_homcounts.json`, `valid_homcounts.json`, and `test_homcounts.json`.
+
+Before running the model training for R-GCN, please unzip the `data/QM9/v5_homcounts.zip` file, and move the contents into the `data/QM9` directory.
 
 ## Running
 
-The script we use to run the experiments is ``src/main.py``. Note that the script should be run from inside 
-the ``src`` directory, or mark it as Source Root.
+The script we use to run the experiments is ``src/main.py``. Note that the script should be run from inside the ``src`` directory, or mark it as Source Root.
 
 The main parameters of the script are:
 
-- ``--dataset`` the dataset we use.
-- ``--model`` for the model used. The main convention is ``SP-{INNER}-{OUTER}``, where ``INNER`` corresponds to 
-the approach we use for aggregating the embeddings on each hop level, while ``OUTER`` is the approach we use for 
-aggregating the different hop levels. The main models we use are ``SP-SUM-WEIGHT``, ``SP-EDGESUM-WEIGHT`` and
-``SP-RSUM-WEIGHT``, where the common ``WEIGHT`` outer aggregation is the normalised sum that the simple model in the
-paper uses (SPN).
-- ``--mode`` for the current task type. We use ``gc`` for Graph Classification, 
-and ``gr`` for Graph Regression. 
+- ``--dataset`` the dataset we use. We use `QM9`.
+- ``--model`` for the model used. We use `gcn` for R-GCN.
+- ``--mode`` for the current task type. We use ``gr`` for Graph Regression. 
 
 Additionally, some of the more useful configurable parameters are:
 
@@ -56,50 +37,35 @@ Additionally, some of the more useful configurable parameters are:
 - ``--lr`` for the learning rate.
 - ``--dropout`` for the dropout probability.
 - ``--epochs`` for the number of epochs.
+- ``--num_layers`` for the number of layers.
+- ``--res_freq`` for the layer interval for residual connections.
+
+QM9 specific parameters include:
+- ``--specific_task`` for the integer id for the QM9 objective / task we want to predict.
+- ``--nb_reruns`` for the number of repeats per task.
 
 A detailed list of all additional arguments can be seen using the following command:
 
 ``python main.py -h``
 
 ## Example running 
+In order to reproduce the results in Section 5.2 of the paper, run the following:
 
-You can run the end-to-end experiments for the datasets from each class using the commands below, where the 
-arguments are replaced with:
+```bash
+cd src
+python main.py -d QM9 -m GCN --mode gr --res_freq 2 --batch_size 128 --emb_dim 128 --num_layers 8
+```
 
-- ``{dataset}`` is the dataset we want to run the experiment on 
-- ``{k}`` is the maximum distance for a SP layer 
-- ``{L}`` is the number of layers
-- ``{QM9_TASK}`` is an integer id for the QM9 objective / task we want to predict
+To run 5 reruns of the model on only mu (the first property), use the following command:
 
-### TU Datasets (Chemical), Prox
-
-``python main.py -d {dataset} -m SP-SUM-WEIGHT --max_distance {k} --num_layers {L} --mode gc``
-
-### MoleculeNet
-
-``python main.py -d {dataset} -m SP-EDGESUM-WEIGHT --max_distance {k} --num_layers {L} --mode gc``
-
-### QM9
-
-``python main.py -d QM9 -m SP-RSUM-WEIGHT --max_distance {k} --num_layers {L} --specific_task {QM9_TASK} --mode gr``
+```bash
+cd src
+python main.py -d QM9 -m GCN --mode gr --res_freq 2 --batch_size 128 --emb_dim 128 --num_layers 8 --nb_reruns 5 --specific_task 0 
+```
 
 ## Neptune.ai
 
-You can use [neptune.ai](https://neptune.ai) 
-to track the progress, by specifying your project and token in ``src/config.ini``.  Leave the
-fields as ``...`` if you want to just run locally.
+You can use [neptune.ai](https://neptune.ai) to track the progress, by specifying your project and token in ``src/config.ini``.  Leave the fields as ``...`` if you want to just run locally. Alternatively, you can manually set your project and api token in lines 35 and 36 of `src/main.py`.
 
-##  Citing this paper
-If you make use of this code, or its accompanying [paper](https://arxiv.org/abs/2206.01003), 
-please cite this work as follows:
-
-```
-@inproceedings{ADC-LoG2022,
-  title={Shortest Path Networks for Graph Property Prediction},
-  author    = {Ralph Abboud and Radoslav Dimitrov and
-                {\.I}smail {\.I}lkan Ceylan},
-  booktitle={Proceedings of the First Learning on Graphs Conference ({LoG})},
-  year={2022},
-  note={Oral presentation}
-}
-```
+## Testing R-GCN+Hom with Fully-Adjacent layer
+We also tested a version of R-GCN that uses a fully-adjacent layer at the end in accordance with [Alon et al. (2021)](https://arxiv.org/abs/2006.05205). In order to reproduce those results (which are presented in Appendix D.4), replace the `src/main.py` and `src/models/gcn.py` files with the corresponding files in the `FA_files` directory, and use the commands above to run the model.
