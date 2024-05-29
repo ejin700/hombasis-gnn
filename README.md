@@ -9,3 +9,15 @@ This repository is divided into four sub-projects:
 4. The subdirectory `qm9` is a clone of [https://github.com/radoslav11/SP-MPNN/tree/main](https://github.com/radoslav11/SP-MPNN/tree/main) by [Abboud et al. (2022)](). This project can be used to reproduce the QM9 experiments from Section 5.2 of the paper.
 
 For installation and dependency information for each sub-project, please refer to the README files in the respective directories.
+
+## Cite
+If you make use of this code, or its accompanying [paper](https://arxiv.org/abs/2402.08595), please cite this work as follows:
+```
+@inproceedings{JBCL-ICML24,
+  title = "Homomorphism Counts for Graph Neural Networks: All About That Basis",
+  author = "Emily Jin and Michael Bronstein and Ä°smail Ä°lkan Ceylan and Matthias Lanzinger",
+  year = "2024",
+  booktitle = "Proceedings of Fourty-first International Conference on Machine Learning (ICML)",
+  url = "https://arxiv.org/abs/2402.08595",
+}
+```
