@@ -15,7 +15,7 @@ If you make use of this code, or its accompanying [paper](https://arxiv.org/abs/
 ```
 @inproceedings{JBCL-ICML24,
   title = "Homomorphism Counts for Graph Neural Networks: All About That Basis",
-  author = "Emily Jin and Michael Bronstein and Ä°smail Ä°lkan Ceylan and Matthias Lanzinger",
+  author = "Emily Jin and Michael Bronstein and {\.I}smail {\.I}lkan Ceylan and Matthias Lanzinger",
   year = "2024",
   booktitle = "Proceedings of Fourty-first International Conference on Machine Learning (ICML)",
   url = "https://arxiv.org/abs/2402.08595",
