@@ -2,7 +2,7 @@
 
 This repository contains a modified version of the code used by the [Shortest Path Message Passing Neural Network (SP-MPNN) paper](https://arxiv.org/abs/2206.01003). We adapt their framework to evaluate the performance of R-GCN with homomorphism counts for the QM9 dataset (as presented in Section 5.2 and Appendix D.4 of our paper). 
 
-Note that most modifications were made to the `src/utils/dataset_loader.py`, `src/utils/model_loader.py`, and `src/models/gcn.py` files. For refenece, the original SP-MPNN repo can be found [here](https://github.com/radoslav11/SP-MPNN).
+Note that most modifications were made to the `src/utils/dataset_loader.py`, `src/utils/model_loader.py`, and `src/models/gcn.py` files. For refenece, the original SP-MPNN repo can be found [here](https://github.com/radoslav11/SP-MPNN). We also do not provide modifications to R-GAT or R-GIN to allow for the inclusion of homomorphism counts, but this can be done easily by following the changes that we made in the R-GCN implementation.
 
 ## Requirements
 
@@ -68,4 +68,4 @@ python main.py -d QM9 -m GCN --mode gr --res_freq 2 --batch_size 128 --emb_dim 1
 You can use [neptune.ai](https://neptune.ai) to track the progress, by specifying your project and token in ``src/config.ini``.  Leave the fields as ``...`` if you want to just run locally. Alternatively, you can manually set your project and api token in lines 35 and 36 of `src/main.py`.
 
 ## Testing R-GCN+Hom with Fully-Adjacent layer
-We also tested a version of R-GCN that uses a fully-adjacent layer at the end in accordance with [Alon et al. (2021)](https://arxiv.org/abs/2006.05205). In order to reproduce those results (which are presented in Appendix D.4), replace the `src/main.py` and `src/models/gcn.py` files with the corresponding files in the `FA_files` directory, and use the commands above to run the model.
+We also tested a version of R-GCN that uses a fully-adjacent layer at the end in accordance with [Alon et al. (2021)](https://arxiv.org/abs/2006.05205). In order to reproduce those results (which are presented in Appendix D.4), replace the `src/models/gcn.py` file with the corresponding `FA_models/gcn.py` file, and use the commands above to run the model.

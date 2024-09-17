@@ -75,7 +75,6 @@ def read_qm9(direc, file, transform_f, processed_root):
                 pickle.dump(pyg_graphs, g)
                 g.close()
             f.close()
-            print(pyg_graphs[0].fa_edge_attr)
             return pyg_graphs
     else:  # Load the pre-existing file
         with open(presaved_path, "rb") as g:
@@ -126,7 +125,8 @@ def map_qm9_to_pyg(json_file, homcounts):
     
     # set data 
     x = torch.FloatTensor(np.array(json_file["node_features"]))
-    graph_hom = torch.FloatTensor(np.array(homcounts))
+    ghom = np.sum(np.array(homcounts), axis=0)
+    graph_hom = torch.FloatTensor(ghom)
     
     y = torch.FloatTensor(np.array(json_file["targets"]).T)
     return Data(x=x, edge_index=edge_index, edge_attr=edge_attributes, graph_hom=graph_hom, fa_edge_index=fa_edge_index, fa_edge_attr=fa_edge_attr, y=y)

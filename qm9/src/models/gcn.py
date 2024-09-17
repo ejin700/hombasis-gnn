@@ -50,9 +50,8 @@ class NetGCN(torch.nn.Module):
             batch_norm=batch_norm,
             final_activation=True,
         )
-
         self.regression_gate_mlp = instantiate_mlp(
-            in_channels=emb_sizes[-1] + num_features + 31, # 5vertex + 6cycle homcounts
+            in_channels=emb_sizes[-1] + num_features,
             out_channels=1,
             device=device,
             final_activation=False,
@@ -60,6 +59,13 @@ class NetGCN(torch.nn.Module):
         )
         self.regression_transform_mlp = instantiate_mlp(
             in_channels=emb_sizes[-1],
+            out_channels=1,
+            device=device,
+            final_activation=False,
+            batch_norm=batch_norm,
+        )  # No final act
+        self.final_out_mlp = instantiate_mlp(
+            in_channels=32, # final rep (1) + homcounts (31)
             out_channels=1,
             device=device,
             final_activation=False,
@@ -74,7 +80,7 @@ class NetGCN(torch.nn.Module):
         for i in range(self.num_layers):
             in_channel = emb_sizes[i]
             out_channel = emb_sizes[i + 1]
-            gcn_layer = RGCNConv(in_channels=in_channel, out_channels=out_channel, num_relations=nb_edge_types, aggr='sum').to(device)
+            gcn_layer = RGCNConv(in_channels=in_channel, out_channels=out_channel, num_relations=nb_edge_types, aggr='add').to(device)
             gcn_layers.append(gcn_layer)
             if self.layer_norm:
                 layer_norms.append(torch.nn.LayerNorm(emb_sizes[i + 1]).to(device))
@@ -122,9 +128,6 @@ class NetGCN(torch.nn.Module):
         edge_index = data.edge_index.to(self.device)
         edge_attr = data.edge_attr.to(self.device)
         
-        fa_edge_index = data.fa_edge_index.to(self.device)
-        fa_edge_attr = data.fa_edge_attr.to(self.device)
-        
         batch = data.batch.to(self.device)
 
         x_feat = self.initial_mlp(x_feat)  # Otherwise by an MLP
@@ -154,14 +157,18 @@ class NetGCN(torch.nn.Module):
             else:
                 x_feat = torch.relu(x_feat)
 
-        h_hom = data.graph_hom.view(-1, 31)
+        h_hom = data.graph_hom.view(-1, 31) # 31 homcounts for v5+c6
 
-        gate_input = torch.cat([data.x, x_feat, h_hom], dim=-1)
+        gate_input = torch.cat([data.x, x_feat], dim=-1)
         gate_out = self.regression_gate_mlp(gate_input)
 
         transform_out = self.regression_transform_mlp(x_feat)
         product = torch.sigmoid(gate_out) * transform_out
-        out = scatter_sum(product, batch, dim=0).to(self.device)
+        h_out = scatter_sum(product, batch, dim=0).to(self.device)
+        
+        final_input = torch.cat([h_out, h_hom], dim=1)
+        out = self.final_out_mlp(final_input)
+        
         return out
 
     def log_hop_weights(self, neptune_client, exp_dir):
