@@ -76,7 +76,7 @@ parser.add_argument(
 )
 parser.add_argument(
     "--layer_norm",
-    help="Use layer norm after every message passing iteration (default False)",
+    help="Use layer norm after every message passing iteration (default True)",
     type=str2bool,
     default=True,
 )
