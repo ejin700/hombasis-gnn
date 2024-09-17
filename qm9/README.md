@@ -16,9 +16,9 @@ Tested combination: Python 3.11.5 + PyTorch 2.1.2 + PyTorch Geometric 2.4.0.
 
 ### QM9
 
-The QM9 dataset is provided in ``data/QM9``. The homomorphism counts of all connected graphs with up to 5 vertices for all graphs in the train, valid, and test set are contained in the `data/QM9/v5_homcounts.zip` file. This zip file contains a folder with three files: `train_homcounts.json`, `valid_homcounts.json`, and `test_homcounts.json`.
+The QM9 dataset is provided in ``data/QM9``. The homomorphism counts of all connected graphs with up to 5 vertices and the 6-cycle for all graphs in the train, valid, and test set are contained in the `data/QM9/v5c6_homcounts.zip` file. This zip file contains a folder with three files: `train_homcounts.json`, `valid_homcounts.json`, and `test_homcounts.json`.
 
-Before running the model training for R-GCN, please unzip the `data/QM9/v5_homcounts.zip` file, and move the contents into the `data/QM9` directory.
+Before running the model training for R-GCN, please unzip the `data/QM9/v5c6_homcounts.zip` file, and move the contents into the `data/QM9` directory.
 
 ## Running
 
