@@ -1,12 +1,10 @@
-# PlanE: Representation Learning over Planar Graphs
-This repository is the official codebase of the NeurIPS 2023 paper "Representation Learning over Planar Graphs"([Arxiv](https://arxiv.org/abs/2307.01180)). 
+## About
 
-The goal of this work is to design architectures for **efficiently** learning **complete** invariants of planar graphs. Inspired by the classical planar graph isomorphism algorithm of Hopcroft and Tarjan, we propose PlanE as a framework for planar representation learning. PlanE includes architectures which can learn **complete** invariants over planar graphs while remaining practically scalable. 
+This repository contains a modified version of the code used by the [PlanE: Representation Learning over Planar Graphs paper](https://arxiv.org/abs/2307.01180). We adapt their framework to evaluate the performance of BasePlanE with homomorphism counts for the ZINC12k dataset without edge features (as presented in Section 5.1 of our paper). 
 
-![image](img/plane.svg)
+Note that most modifications were made to the `datasets/zinc.py`, `plane/models.py`, and `experiments/main.py` files. For refenece, the original PlanE repo can be found [here](https://github.com/ZZYSonny/PlanE/tree/ce2561bfae46248c3260ac91b4a59be5d0d1c9a1).
 
-## Getting Started
-### Environment
+## Requirements
 We provide all the dependencies in a conda environment. You can create the environment by running
 ```bash
 conda env create -f environment.yml
@@ -14,37 +12,31 @@ conda env create -f environment.yml
 
 You may also use [micromamba](https://mamba.readthedocs.io/en/latest/user_guide/micromamba.html) to speed up environment installation.
 
-### Run experiments
-Before running the experiments, you will first need to prepare the dataset. Simply run the following command to download and preprocess all datasets used in the paper.
+## Datasets
+### Preparing Homomorphism Counts
+We use the same homomorphism counts across all models for the ZINC dataset. Please download and unzip the `zinc-data.zip` file, which you can access [here](https://github.com/ejin700/hombasis-gnn/blob/main/hombasis-bench/data/zinc-data.zip), and move the homomorphism count files into the `.dataset_src` directory.
+
+### Dataset Preparation
+Before running the experiments, you will first need to prepare the dataset. Simply run the following command to download and preprocess the datasets used for this model. 
 
 ```bash
 python3 -m preprocess.prepare
 ```
 
-We use [WanDB](https://wandb.ai/) to track experiments. You can use our pre-defined searching grid by creating a sweep from the [experiments/config](experiments/config) folder. For example, `wandb sweep experiments/config/express_synth/exp/plane.yaml` will create a WanDB sweep to tune PlanE on the EXP dataset. After creating a sweep, you can find the command to launch the sweep from the command line output. They are usually in the form of `wandb agent <username>/<project>/<sweep_id>`. 
+Note that the current dataset preparation file will only generate the dataset using the anchored Spasm* homomorphism counts, but to prepare the dataset for other count types, simply change the `count_type` parameter in the `get_dataset` function on line 17. The only supported count type arguments are: `[subgraph, homcount, spasm, anchoredSpasm]`, which correspond to the configurations used in Table 1 (Section 5.1) of our paper.
 
-Once the experiment is launched, you can find the result in the WanDB dashboard. The training/validation/test metric is logged as `train`, `valid`, `test`.
+## Run experiments
 
-## Extra Datasets
-We designed two extra synethetic datasets to evaluate the expressitivity of PlanE model. 
+We use [wandb](https://wandb.ai/) to track experiments. You can use our pre-defined configuration files by creating a sweep from the [experiments/config/real_world/zinc](experiments/config/real_world/zinc/) folder. To create a wandb sweep to run BasePlanE and reproduce our anchored Spasm* results from Table 1, run:
 
-### Synthetic Dataset: QM9CC
-We designed the QM9CC dataset to evaluate the model's ability to detect structural graph signals *without* an explicit reference to the target structure. The dataset is generated from a subset of graphs from the QM9 dataset and the goal is to predict the clustering coefficient of the graph.
-
-If you may want to benchmark your model on the QM9CC dataset,simply copy [datasets/qm9cc_portable.py](datasets/qm9cc_portable.py) and [.dataset_src](.dataset_src) folder to your project. 
-
-### Synthetic Dataset: P3R
-The P3R dataset is made from 9 planar 3-regular graphs of size 10. The training, validation and test set are permutations of the 9 graphs. The goal is to predict a number from 0 to 8, which is the index of the graph from the 9 P3R graphs.
-
-## Cite
-If you make use of this code, or its accompanying [paper](https://arxiv.org/abs/2307.01180), please cite this work as follows:
+```bash
+wandb sweep experiments/config/real_world/zinc/12k-noe-plane-anchoredSpasm.yaml
 ```
-@inproceedings{DimitrovZAC23,
-  author    = {Radoslav Dimitrov and Zeyang Zhao and
-               Ralph Abboud and
-               {\.I}smail {\.I}lkan Ceylan},
-  title     = {PlanE: Representation Learning over Planar Graphs},
-  booktitle    = {Proceedings of the Thirty-Seventh Annual Conference on Advances in Neural Information Processing Systems, {NeurIPS}},
-  year         = {2023}
-}
+
+After creating a sweep, the command to launch the sweep will be shown on the command line output. They are usually of the form:
+
+```bash
+wandb agent <username>/<project>/<sweep_id>
 ```
+
+Once the experiment is launched, you can find the result in the wandb dashboard. The training/validation/test metric is logged as `train`, `valid`, `test`.
