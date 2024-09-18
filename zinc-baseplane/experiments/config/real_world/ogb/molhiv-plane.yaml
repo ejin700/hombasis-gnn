@@ -1,0 +1,61 @@
+name: ogbg-molhiv
+program: experiments.main
+method: grid
+parameters:
+  dataset:
+    value: "ogbg_molhiv"
+  cur_seed:
+    values: [0,1,2,3,4]
+  cur_split:
+    value: "None"
+  fn_loss:
+    value: "BCEWithLogitsLoss"
+  fn_metric:
+    value: "ogb"
+  metric_goal:
+    value: "max"
+  
+  epochs:
+    value: 150
+  batch_size:
+    value: 256
+  
+  lr_start:
+    values: [1e-3, 1e-4]
+  lr_scheduler:
+    value: "ReduceLROnPlateau_1e-5_0.5_30"
+
+  model_flags_layer:
+    value: "plane"
+  model_num_layers:
+    values: [2,3]
+  model_dim_hidden:
+    values: [64,128]
+  model_final_act:
+    value: "Identity"
+
+  model_dropout:
+    values: [0.2,0.5]
+  model_dropout_loc:
+    values: ["edg_agg_out", "edg_com_out","enc_edg_com_out","enc_edg_com_agg_out"]
+
+  plane_dim_pe:
+    value: 16
+  plane_flags_agg:
+    value: "n_t_b_cr_gr"
+  
+  trainer_log_loss_freq:
+    value: 20
+  trainer_save_cp_freq:
+    value: 1
+  trainer_eval_train_freq:
+    value: -1
+  trainer_save_best_state:
+    value: "None"
+
+command:
+  - ${env}
+  - python3
+  - -m
+  - ${program}
+  - ${args}

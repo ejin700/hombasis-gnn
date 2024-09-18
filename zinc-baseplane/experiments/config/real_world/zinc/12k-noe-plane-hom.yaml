@@ -1,0 +1,66 @@
+name: zinc12k-noe-plane-hom
+program: experiments.main
+method: grid
+parameters:
+  dataset:
+    value: "HombasisZINC12kNoE"
+  cur_seed:
+    values: [0,1,2,3]
+  cur_split:
+    value: "None"
+  fn_loss:
+    value: "L1"
+  fn_metric:
+    value: "L1"
+  metric_goal:
+    value: "min"
+  
+  epochs:
+    value: 500
+  batch_size:
+    value: 256
+  
+  lr_start:
+    values: [1e-3]
+  lr_scheduler:
+    value: "ReduceLROnPlateau_1e-5_0.5_30"
+
+  model_flags_layer:
+    value: "plane"
+  model_num_layers:
+    value: 3
+  model_dim_hidden:
+    values: [128]
+  model_final_act:
+    value: "Identity"
+
+  model_dropout:
+    value: 0
+  model_dropout_loc:
+    value: ""
+
+  count_type:
+    value: "homcount"
+  count_dim:
+    value: 6
+
+  plane_dim_pe:
+    value: 16
+  plane_flags_agg:
+    value: "n_t_b_cr_gr"
+  
+  trainer_log_loss_freq:
+    value: 10
+  trainer_save_cp_freq:
+    value: 25
+  trainer_eval_train_freq:
+    value: -1
+  trainer_save_best_state:
+    value: "None"
+
+command:
+  - ${env}
+  - python3
+  - -m
+  - ${program}
+  - ${args}
